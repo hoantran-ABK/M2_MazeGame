@@ -74,16 +74,16 @@ void Player::Draw()
 
 	if (this->HasShield())
 	{
-		SetConsoleTextAttribute(console, (int)ActorColor::Cyan);
-
+		this->m_color = ActorColor::Cyan;
+		SetConsoleTextAttribute(console, (int)this->m_color);
 		cout << "@";
 
 		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
 	}
 	else
 	{
-		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
-
+		this->m_color = ActorColor::Regular;
+		SetConsoleTextAttribute(console, (int)this->m_color);
 		cout << "@";
 
 		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
