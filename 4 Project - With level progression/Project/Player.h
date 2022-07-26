@@ -8,6 +8,10 @@ class Player : public PlacableActor
 public:
 	Player();
 
+	bool HasShield();
+	void PickupShield();
+	void ConsumeShield();
+
 	bool HasKey();
 	bool HasKey(ActorColor color);
 	void PickupKey(Key* key);
@@ -27,4 +31,7 @@ private:
 	Key* m_pCurrentKey;
 	int m_money;
 	int m_lives;
+	
+	//ActorColor m_color;
+	bool m_shield;
 };

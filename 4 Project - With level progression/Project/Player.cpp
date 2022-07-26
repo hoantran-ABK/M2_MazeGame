@@ -9,12 +9,28 @@ using namespace std;
 constexpr int kStartingNumberOfLives = 3;
 
 Player::Player()
-	: PlacableActor(0, 0)
+	: PlacableActor(0, 0, ActorColor::Regular)
 	, m_pCurrentKey(nullptr)
 	, m_money(0)
 	, m_lives(kStartingNumberOfLives)
+	, m_shield(false)
 {
 
+}
+
+bool Player::HasShield()
+{
+	return m_shield;
+}
+
+void Player::PickupShield()
+{
+	this->m_shield = true;
+}
+
+void Player::ConsumeShield()
+{
+	this->m_shield = false;
 }
 
 bool Player::HasKey()
@@ -24,7 +40,7 @@ bool Player::HasKey()
 
 bool Player::HasKey(ActorColor color)
 {
-	return true;// HasKey() && m_pCurrentKey->GetColor() == color;
+	return HasKey() && m_pCurrentKey->GetColor() == color;
 }
 
 void Player::PickupKey(Key* key)
@@ -53,5 +69,24 @@ void Player::DropKey()
 
 void Player::Draw()
 {
-	cout << "@";
+
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	if (this->HasShield())
+	{
+		SetConsoleTextAttribute(console, (int)ActorColor::Cyan);
+
+		cout << "@";
+
+		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+	}
+	else
+	{
+		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+
+		cout << "@";
+
+		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+	}
+	
 }

@@ -14,6 +14,8 @@
 #include "Utility.h"
 #include "StateMachineExampleGame.h"
 
+#include "Shield.h"
+
 using namespace std;
 
 constexpr int kArrowInput = 224;
@@ -30,9 +32,10 @@ GameplayState::GameplayState(StateMachineExampleGame* pOwner)
 	, m_currentLevel(0)
 	, m_pLevel(nullptr)
 {
-	m_LevelNames.push_back("Level1.txt");
-	m_LevelNames.push_back("Level2.txt");
-	m_LevelNames.push_back("Level3.txt");
+	//m_LevelNames.push_back("Level1.txt");
+	//m_LevelNames.push_back("Level2.txt");
+	//m_LevelNames.push_back("Level3.txt");
+	m_LevelNames.push_back("LevelX.txt");
 }
 
 GameplayState::~GameplayState()
@@ -153,17 +156,29 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 		{
 			Enemy* collidedEnemy = dynamic_cast<Enemy*>(collidedActor);
 			assert(collidedEnemy);
-			AudioManager::GetInstance()->PlayLoseLivesSound();
 			collidedEnemy->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
 
-			m_player.DecrementLives();
-			if (m_player.GetLives() < 0)
+			// add stuff for IF PLAYER IS SHIELDED, kill enemy, no lives taken
+			if (m_player.HasShield())
 			{
-				//TODO: Go to game over screen
-				AudioManager::GetInstance()->PlayLoseSound();
-				m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);
+				AudioManager::GetInstance()->PlayMoneySound();
+				m_player.AddMoney(10);
+				m_player.ConsumeShield();
 			}
+			else
+			{
+				AudioManager::GetInstance()->PlayLoseLivesSound();
+				m_player.DecrementLives();
+				if (m_player.GetLives() < 0)
+				{
+					//TODO: Go to game over screen
+					AudioManager::GetInstance()->PlayLoseSound();
+					m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);
+				}
+			}
+			//
+			
 			break;
 		}
 		case ActorType::Money:
@@ -184,6 +199,20 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 			{
 				m_player.PickupKey(collidedKey);
 				collidedKey->Remove();
+				m_player.SetPosition(newPlayerX, newPlayerY);
+				AudioManager::GetInstance()->PlayKeyPickupSound();
+			}
+			break;
+		}
+		// Add switch case for colliding and picking up a shield
+		case ActorType::Shield:
+		{
+			Shield* collidedShield = dynamic_cast<Shield*>(collidedActor);
+			assert(collidedShield);
+			if (!m_player.HasKey())
+			{
+				m_player.PickupShield();
+				collidedShield->Remove();
 				m_player.SetPosition(newPlayerX, newPlayerY);
 				AudioManager::GetInstance()->PlayKeyPickupSound();
 			}
@@ -265,11 +294,23 @@ void GameplayState::DrawHUD(const HANDLE& console)
 	cout << endl;
 
 	// Top Border
-	for (int i = 0; i < m_pLevel->GetWidth(); ++i)
+	// applied TA : Dean Jones's fix for odd UI bug from slack in levelupu_students channel
+	if (m_pLevel->GetWidth() < 53)
 	{
-		cout << Level::WAL;
+		for (int i = 0; i < 53; ++i)
+		{
+			cout << Level::WAL;
+		}
+		cout << endl;
 	}
-	cout << endl;
+	else
+	{
+		for (int i = 0; i < m_pLevel->GetWidth(); ++i)
+		{
+			cout << Level::WAL;
+		}
+		cout << endl;
+	}
 
 	// Left Side border
 	cout << Level::WAL;

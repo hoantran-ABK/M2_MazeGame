@@ -10,6 +10,8 @@
 #include "Goal.h"
 #include "Money.h"
 
+#include "Shield.h"
+
 using namespace std;
 
 Level::Level()
@@ -126,6 +128,10 @@ bool Level::ConvertLevel(int* playerX, int* playerY)
 			case '|':
 			case '-':
 				m_pLevelData[index] = WAL;
+				break;
+			case 'S':
+				m_pLevelData[index] = ' ';
+				m_pActors.push_back(new Shield(x, y, ActorColor::Cyan));
 				break;
 			case 'r':
 				m_pLevelData[index] = ' ';
