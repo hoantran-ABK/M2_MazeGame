@@ -32,7 +32,7 @@ GameplayState::GameplayState(StateMachineExampleGame* pOwner)
 	, m_currentLevel(0)
 	, m_pLevel(nullptr)
 {
-	//m_LevelNames.push_back("Level1.txt");
+	m_LevelNames.push_back("Level1.txt");
 	//m_LevelNames.push_back("Level2.txt");
 	//m_LevelNames.push_back("Level3.txt");
 	m_LevelNames.push_back("LevelX.txt");
@@ -334,7 +334,16 @@ void GameplayState::DrawHUD(const HANDLE& console)
 	GetConsoleScreenBufferInfo(console, &csbi);
 
 	COORD pos;
-	pos.X = m_pLevel->GetWidth() - 1;
+	if (m_pLevel->GetWidth() < 53)
+	{
+		pos.X = 52;
+
+	}
+	else
+	{
+		pos.X = m_pLevel->GetWidth() - 1;
+
+	}
 	pos.Y = csbi.dwCursorPosition.Y;
 	SetConsoleCursorPosition(console, pos);
 
@@ -342,9 +351,21 @@ void GameplayState::DrawHUD(const HANDLE& console)
 	cout << endl;
 
 	// Bottom Border
-	for (int i = 0; i < m_pLevel->GetWidth(); ++i)
+	if (m_pLevel->GetWidth() < 53)
 	{
-		cout << Level::WAL;
+		for (int i = 0; i < 53; ++i)
+		{
+			cout << Level::WAL;
+		}
+		cout << endl;
+	}
+	else
+	{
+		for (int i = 0; i < m_pLevel->GetWidth(); ++i)
+		{
+			cout << Level::WAL;
+		}
+		cout << endl;
 	}
 	cout << endl;
 }

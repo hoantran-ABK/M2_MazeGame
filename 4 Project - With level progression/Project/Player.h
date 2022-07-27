@@ -32,6 +32,5 @@ private:
 	int m_money;
 	int m_lives;
 	
-	//ActorColor m_color;
 	bool m_shield;
 };
