@@ -11,6 +11,7 @@
 #include "Money.h"
 
 #include "Shield.h"
+#include "Spike.h"
 
 using namespace std;
 
@@ -172,6 +173,10 @@ bool Level::ConvertLevel(int* playerX, int* playerY)
 					*playerX = x;
 					*playerY = y;
 				}
+				break;
+			case '#':
+				m_pActors.push_back(new Spike(x, y, 3, 2));
+				m_pLevelData[index] = ' '; // clear the lev0el
 				break;
 			case 'e':
 				m_pActors.push_back(new Enemy(x, y));

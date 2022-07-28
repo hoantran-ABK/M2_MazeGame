@@ -6,7 +6,7 @@
 
 using namespace std;
 
-constexpr int kStartingNumberOfLives = 3;
+constexpr int kStartingNumberOfLives = 1;
 
 Player::Player()
 	: PlacableActor(0, 0, ActorColor::Regular)

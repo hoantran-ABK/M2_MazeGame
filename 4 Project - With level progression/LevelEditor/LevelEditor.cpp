@@ -151,6 +151,7 @@ void DisplayLegend()
 	cout << "e for non-moving enemy" << endl;
 
 	cout << "S for Shield Power Up" << endl;
+	cout << "# for Spike Trap" << endl;
 
 	cout << "X for end" << endl;
 

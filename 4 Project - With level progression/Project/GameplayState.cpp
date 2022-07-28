@@ -15,6 +15,7 @@
 #include "StateMachineExampleGame.h"
 
 #include "Shield.h"
+#include "Spike.h"
 
 using namespace std;
 
@@ -32,10 +33,11 @@ GameplayState::GameplayState(StateMachineExampleGame* pOwner)
 	, m_currentLevel(0)
 	, m_pLevel(nullptr)
 {
-	m_LevelNames.push_back("Level1.txt");
+	//m_LevelNames.push_back("Level1.txt");
 	//m_LevelNames.push_back("Level2.txt");
 	//m_LevelNames.push_back("Level3.txt");
 	m_LevelNames.push_back("LevelX.txt");
+	m_LevelNames.push_back("LevelT.txt");
 }
 
 GameplayState::~GameplayState()
@@ -181,6 +183,39 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 			
 			break;
 		}
+
+		// delayed spike trap
+		case ActorType::Spike:
+		{
+			Spike* collidedSpike = dynamic_cast<Spike*>(collidedActor);
+			assert(collidedSpike);
+			//collidedSpike->Remove();
+			m_player.SetPosition(newPlayerX, newPlayerY);
+			
+			if (collidedSpike->IsActive())
+			{
+				m_player.DecrementLives();
+				if (m_player.GetLives() < 0)
+				{
+					//TODO: Go to game over screen
+					AudioManager::GetInstance()->PlayLoseSound();
+					m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);
+				}
+				collidedSpike->Update();
+			}
+			else if (collidedSpike->IsTriggered() && !collidedSpike->IsActive())
+			{
+				// do nothing, it should become active later
+			}
+			else if (!collidedSpike->IsTriggered() && !collidedSpike->IsActive())
+			{
+				//not active nor triggered, trigger the spike trap
+				collidedSpike->Trigger();
+			}
+
+			break;
+		}
+
 		case ActorType::Money:
 		{
 			Money* collidedMoney = dynamic_cast<Money*>(collidedActor);
@@ -209,7 +244,9 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 		{
 			Shield* collidedShield = dynamic_cast<Shield*>(collidedActor);
 			assert(collidedShield);
-			if (!m_player.HasKey())
+			// breakpoint to make sure the Shield power up collision works 
+			//		and properly sets the member var to have a shield
+			if (!m_player.HasShield())
 			{
 				m_player.PickupShield();
 				collidedShield->Remove();

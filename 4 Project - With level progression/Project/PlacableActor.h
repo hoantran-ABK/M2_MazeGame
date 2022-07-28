@@ -17,6 +17,7 @@ enum class ActorType
 {
 	Door,
 	Enemy,
+	Spike,
 	Goal,
 	Key,
 	Money,
