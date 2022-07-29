@@ -180,26 +180,31 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 				}
 			}
 			//
-			
 			break;
 		}
-
 		// delayed spike trap
 		case ActorType::Spike:
 		{
 			Spike* collidedSpike = dynamic_cast<Spike*>(collidedActor);
 			assert(collidedSpike);
-			//collidedSpike->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
 			
 			if (collidedSpike->IsActive())
 			{
-				m_player.DecrementLives();
-				if (m_player.GetLives() < 0)
+				if (m_player.HasShield())
 				{
-					//TODO: Go to game over screen
-					AudioManager::GetInstance()->PlayLoseSound();
-					m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);
+					m_player.ConsumeShield();
+				}
+				else
+				{
+					AudioManager::GetInstance()->PlayLoseLivesSound();
+					m_player.DecrementLives();
+					if (m_player.GetLives() < 0)
+					{
+						//TODO: Go to game over screen
+						AudioManager::GetInstance()->PlayLoseSound();
+						m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);
+					}
 				}
 				collidedSpike->Update();
 			}
@@ -212,7 +217,6 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 				//not active nor triggered, trigger the spike trap
 				collidedSpike->Trigger();
 			}
-
 			break;
 		}
 
