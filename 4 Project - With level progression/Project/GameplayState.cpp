@@ -146,23 +146,18 @@ void GameplayState::CheckBeatLevel()
 	}
 }
 
-//TODO: Refactor candidate
 bool GameplayState::Update(bool processInput)
 {
-	//TODO: refactor processInput into func to handle input
 	if (processInput && !m_player.GetBeatLevel())
 	{
 		ProcessInput();
 	}
 
-	//TODO: Refactor into BeatLevel Function candidate
-	//TODO: m_beatLevel better name (make it a question m_DidBeatLevel)
 	CheckBeatLevel();
 
 	return false;
 }
 
-//TODO: Refactor candidate
 void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 {
 	// Update Actors does collision check based on X,Y pos as well
@@ -170,7 +165,6 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 	if (collidedActor != nullptr)
 	{
 		collidedActor->OnCollision(&m_player);
-		//m_didBeatLevel = m_player.GetBeatLevel();
 	}
 
 	else if (m_pLevel->IsSpace(newPlayerX, newPlayerY)) // no collision
