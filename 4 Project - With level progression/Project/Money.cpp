@@ -12,3 +12,13 @@ void Money::Draw()
 {
 	std::cout << "$";
 }
+
+void Money::OnCollision(PlacableActor* collidingPlayer)
+{
+	AudioManager::GetInstance()->PlayMoneySound();
+	this->Remove();
+	Player* collidedPlayer = dynamic_cast<Player*>(collidingPlayer);
+
+	collidedPlayer->AddMoney(this->GetWorth());
+	collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+}

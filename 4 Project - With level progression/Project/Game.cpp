@@ -27,6 +27,8 @@ void Game::RunGameLoop()
 		Draw();
 		// Update with input
 		isGameOver = Update();
+		//Update();
+		//isGameOver = CheckGameDone();
 	}
 
 	Draw();
@@ -36,6 +38,11 @@ void Game::Deinitialize()
 {
 	if (m_pStateMachine != nullptr)
 		m_pStateMachine->Cleanup();
+}
+
+bool Game::CheckGameDone()
+{
+	return m_pStateMachine->GetIsDone();
 }
 
 bool Game::Update(bool processInput)

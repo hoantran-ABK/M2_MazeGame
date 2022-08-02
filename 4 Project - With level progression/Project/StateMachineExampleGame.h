@@ -24,6 +24,8 @@ private:
 	GameState* m_pCurrentState;
 	GameState* m_pNextState;
 
+	//bool m_isDone = false;
+
 public:
 	StateMachineExampleGame(Game* pOwner);
 

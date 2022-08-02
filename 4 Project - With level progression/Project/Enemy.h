@@ -1,5 +1,6 @@
 #pragma once
 #include "PlacableActor.h"
+#include "Player.h"
 class Enemy : public PlacableActor
 {
 public:
@@ -8,6 +9,8 @@ public:
 	virtual ActorType GetType() override { return ActorType::Enemy; }
 	virtual void Draw() override;
 	virtual void Update() override;
+
+	void OnCollision(PlacableActor* collidingPlayer) override;
 
 protected:
 	void InitDirection();

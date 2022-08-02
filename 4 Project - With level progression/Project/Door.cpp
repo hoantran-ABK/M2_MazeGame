@@ -24,3 +24,28 @@ void Door::Draw()
 	std::cout << "|";
 	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
 }
+
+void Door::OnCollision(PlacableActor* collidingPlayer)
+{
+	Player* collidedPlayer = dynamic_cast<Player*>(collidingPlayer);
+
+	if (!this->IsOpen())
+	{
+		if (collidedPlayer->HasKey(this->GetColor()))
+		{
+			this->Open();
+			this->Remove();
+			collidedPlayer->UseKey();
+			collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+			AudioManager::GetInstance()->PlayDoorOpenSound();
+		}
+		else
+		{
+			AudioManager::GetInstance()->PlayDoorClosedSound();
+		}
+	}
+	else
+	{
+		collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+	}
+}

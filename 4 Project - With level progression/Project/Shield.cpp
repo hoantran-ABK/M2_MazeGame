@@ -20,3 +20,16 @@ void Shield::Draw()
 
 	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
 }
+
+void Shield::OnCollision(PlacableActor* collidingPlayer)
+{
+	Player* collidedPlayer = dynamic_cast<Player*>(collidingPlayer);
+
+	if (!collidedPlayer->HasShield())
+	{
+		collidedPlayer->PickupShield();
+		this->Remove();
+		collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+		AudioManager::GetInstance()->PlayKeyPickupSound();
+	}
+}

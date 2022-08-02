@@ -12,6 +12,8 @@ public:
 	void RunGameLoop();
 	void Deinitialize();
 
+	bool CheckGameDone();
+
 private:
 	bool Update(bool processInput = true);
 	void Draw();

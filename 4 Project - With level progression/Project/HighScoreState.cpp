@@ -25,6 +25,10 @@ bool HighScoreState::Update(bool processInput)
 	return false;
 }
 
+void HighScoreState::ProcessInput()
+{
+}
+
 void HighScoreState::Draw()
 {
 	system("cls");

@@ -25,12 +25,20 @@ public:
 	int GetLives() { return m_lives; }
 	void DecrementLives() { m_lives--; }
 
+	// add OnTakeDamage function or something to handle player Lose State
+
 	virtual ActorType GetType() override { return ActorType::Player; }
 	virtual void Draw() override;
+
+	//void OnCollision(PlacableActor* collidedActor) override;
+	bool GetBeatLevel() { return m_beatLevel; }
+	void SetBeatLevel(bool beat) { m_beatLevel = beat; }
 private:
 	Key* m_pCurrentKey;
 	int m_money;
 	int m_lives;
 	
 	bool m_shield;
+
+	bool m_beatLevel = false;
 };

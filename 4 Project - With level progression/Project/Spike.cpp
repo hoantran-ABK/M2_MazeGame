@@ -61,3 +61,34 @@ bool Spike::IsActive()
 {
 	return m_active > 0 && m_delay == 0;
 }
+
+void Spike::OnCollision(PlacableActor* collidingPlayer)
+{
+	Player* collidedPlayer = dynamic_cast<Player*>(collidingPlayer);
+
+	collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+
+	if (this->IsActive())
+	{
+		if (collidedPlayer->HasShield())
+		{
+			collidedPlayer->ConsumeShield();
+		}
+		else
+		{
+			AudioManager::GetInstance()->PlayLoseLivesSound();
+			collidedPlayer->DecrementLives();
+			
+		}
+		this->Update();
+	}
+	else if (this->IsTriggered() && !this->IsActive())
+	{
+		// do nothing, it should become active later
+	}
+	else if (!this->IsTriggered() && !this->IsActive())
+	{
+		//not active nor triggered, trigger the spike trap
+		this->Trigger();
+	}
+}

@@ -11,3 +11,12 @@ void Goal::Draw()
 {
 	std::cout << "X";
 }
+
+void Goal::OnCollision(PlacableActor* collidingPlayer)
+{
+	Player* collidedPlayer = dynamic_cast<Player*>(collidingPlayer);
+
+	this->Remove();
+	collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+	collidedPlayer->SetBeatLevel(true);
+}

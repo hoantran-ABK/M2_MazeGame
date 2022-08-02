@@ -1,5 +1,7 @@
 #pragma once
 #include "Point.h"
+//#include "Player.h"
+#include "AudioManager.h"
 
 enum class ActorColor
 {
@@ -49,6 +51,8 @@ public:
 	{
 
 	}
+
+	virtual void OnCollision(PlacableActor* collidingPlayer) { return; }
 
 protected:
 	Point* m_pPosition;

@@ -44,6 +44,31 @@ void Enemy::Update()
 	this->SetPosition(m_pPosition->x + m_directionX, m_pPosition->y + m_directionY);
 }
 
+void Enemy::OnCollision(PlacableActor* collidingPlayer)
+{
+	this->Remove();
+	
+	Player* collidedPlayer = dynamic_cast<Player*>(collidingPlayer);
+
+	collidedPlayer->SetPosition(this->GetXPosition(), this->GetYPosition());
+
+	// TODO: make something to handle damage taken outside of Eneemy, maybe in Player OR GameplayState where this function is being used
+	// add stuff for IF PLAYER IS SHIELDED, kill enemy, no lives taken
+	if (collidedPlayer->HasShield())
+	{
+		AudioManager::GetInstance()->PlayMoneySound();
+		collidedPlayer->AddMoney(10);
+		collidedPlayer->ConsumeShield();
+	}
+	else
+	{
+		AudioManager::GetInstance()->PlayLoseLivesSound();
+		collidedPlayer->DecrementLives();
+		
+		//Game Over moved to outside into HandleCollision in GameplayState
+	}
+}
+
 void Enemy::UpdateDirection(int& current, int& direction, int& movement)
 {
 	current += direction;

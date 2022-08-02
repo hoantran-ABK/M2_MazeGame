@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "PlacableActor.h"
+#include "Player.h"
 
 class Spike : public PlacableActor
 {
@@ -16,6 +17,8 @@ public :
 	void Update();
 	bool IsTriggered();
 	bool IsActive();
+
+	void OnCollision(PlacableActor* collidingPlayer) override;
 
 private:
 	int m_active;
