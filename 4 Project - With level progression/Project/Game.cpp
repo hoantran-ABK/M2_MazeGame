@@ -19,16 +19,19 @@ void Game::RunGameLoop()
 {
 	bool isGameOver = false;
 
+	//std::thread InputThread(&Game::ProcessInputs, this);
+
+	//Update(false);
 	while (!isGameOver)
 	{
 		// update with no input
 		Update(false);
+
 		// Draw
 		Draw();
 		// Update with input
-		isGameOver = Update();
-		//Update();
-		//isGameOver = CheckGameDone();
+		ProcessInputs();
+		isGameOver = CheckGameDone();
 	}
 
 	Draw();
@@ -48,6 +51,11 @@ bool Game::CheckGameDone()
 bool Game::Update(bool processInput)
 {
 	return m_pStateMachine->UpdateCurrentState(processInput);
+}
+
+void Game::ProcessInputs()
+{
+	m_pStateMachine->ProcessInputs();
 }
 
 void Game::Draw()

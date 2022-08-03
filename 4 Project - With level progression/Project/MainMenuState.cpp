@@ -30,6 +30,11 @@ bool MainMenuState::Update(bool processInput)
 
 void MainMenuState::ProcessInput()
 {
+	if (m_shouldQuit)
+	{
+		return;
+	}
+
 	int input = _getch();
 	if (input == kEscapeKey || (char)input == kQuit)
 	{

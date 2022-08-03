@@ -17,10 +17,16 @@ bool LoseState::Update(bool processInput)
 {
 	if (processInput)
 	{
-		int input = _getch();
-		m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);
+		ProcessInput();
 	}
+
 	return false;
+}
+
+void LoseState::ProcessInput()
+{
+	int input = _getch();
+	m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);
 }
 
 void LoseState::Draw()

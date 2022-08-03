@@ -33,7 +33,7 @@ GameplayState::GameplayState(StateMachineExampleGame* pOwner)
 	, m_currentLevel(0)
 	, m_pLevel(nullptr)
 {
-	m_LevelNames.push_back("Level1.txt");
+	//m_LevelNames.push_back("Level1.txt");
 	//m_LevelNames.push_back("Level2.txt");
 	//m_LevelNames.push_back("Level3.txt");
 	m_LevelNames.push_back("LevelX.txt");
@@ -66,6 +66,11 @@ void GameplayState::Enter()
 
 void GameplayState::ProcessInput()
 {
+	if (m_player.GetBeatLevel())
+	{
+		CheckBeatLevel();
+		return;
+	}
 	int input = _getch();
 	int arrowInput = 0;
 	int newPlayerX = m_player.GetXPosition();
@@ -183,6 +188,7 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 		AudioManager::GetInstance()->PlayLoseSound();
 		m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);
 	}
+
 }
 
 void GameplayState::Draw()

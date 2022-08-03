@@ -17,7 +17,7 @@ class GameplayState : public GameState
 	Level* m_pLevel;
 
 	int m_skipFrameCount;
-	static constexpr int kFramesToSkip = 2;
+	static constexpr int kFramesToSkip = 1;
 
 	int m_currentLevel;
 

@@ -1,4 +1,6 @@
 #pragma once
+#include <thread>
+
 #include "GameStateMachine.h"
 #include "Player.h"
 #include "Level.h"
@@ -16,5 +18,7 @@ public:
 
 private:
 	bool Update(bool processInput = true);
+
+	void ProcessInputs();
 	void Draw();
 };
