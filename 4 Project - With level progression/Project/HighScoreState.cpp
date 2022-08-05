@@ -15,16 +15,16 @@ HighScoreState::HighScoreState(StateMachineExampleGame* pOwner)
 	m_HighScores = Utility::WriteHighScore(0);
 }
 
-bool HighScoreState::Update(bool processInput)
+bool HighScoreState::Update(bool IsGameOver, bool processInput)
 {
 	if (processInput)
 	{
-		ProcessInput();
+		ProcessInput(IsGameOver);
 	}
 	return false;
 }
 
-void HighScoreState::ProcessInput()
+void HighScoreState::ProcessInput(bool IsGameOver)
 {
 	int input = _getch();
 	m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);

@@ -28,12 +28,12 @@ public:
 	StateMachineExampleGame(Game* pOwner);
 
 	virtual bool Init() override;
-	virtual bool UpdateCurrentState(bool processInput = true) override;
-	virtual void DrawCurrentState() override;
+	virtual bool UpdateCurrentState(bool & IsReadyForInput, bool & IsDoneWithInput, bool processInput = true) override;
+	virtual void DrawCurrentState(bool & IsReadyForInput, bool & IsDoneWithInput, bool IsGameOver) override;
 	virtual void ChangeState(GameState* pNewState) override;
 	void LoadScene(SceneName scene);
 	virtual bool Cleanup() override;
 
-	virtual void ProcessInputs() override;
+	virtual void ProcessStateInputs(bool & IsReadyForInput, bool & IsDoneWithInput, bool IsGameOver) override;
 };
 

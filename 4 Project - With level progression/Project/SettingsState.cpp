@@ -17,16 +17,16 @@ SettingsState::SettingsState(StateMachineExampleGame* pOwner)
 {
 }
 
-bool SettingsState::Update(bool processInput)
+bool SettingsState::Update(bool IsGameOver, bool processInput)
 {
 	if (processInput)
 	{
-		ProcessInput();
+		ProcessInput(IsGameOver);
 	}
 	return false;
 }
 
-void SettingsState::ProcessInput()
+void SettingsState::ProcessInput(bool IsGameOver)
 {
 	int input = _getch();
 	if (input == kEscapeKey || (char)input == kMainMenu)

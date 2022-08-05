@@ -19,16 +19,16 @@ MainMenuState::MainMenuState(StateMachineExampleGame* pOwner)
 {
 }
 
-bool MainMenuState::Update(bool processInput)
+bool MainMenuState::Update(bool IsGameOver, bool processInput)
 {
 	if (processInput)
 	{
-		ProcessInput();
+		ProcessInput(IsGameOver);
 	}
 	return m_shouldQuit;
 }
 
-void MainMenuState::ProcessInput()
+void MainMenuState::ProcessInput(bool IsGameOver)
 {
 	if (m_shouldQuit)
 	{

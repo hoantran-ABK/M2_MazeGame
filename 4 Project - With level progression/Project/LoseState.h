@@ -11,9 +11,9 @@ public:
 	LoseState(StateMachineExampleGame* pOwner);
 	~LoseState() = default;
 
-	virtual bool Update(bool processInput = true) override;
+	virtual bool Update(bool IsGameOver, bool processInput = true) override;
 
-	void ProcessInput() override;
+	void ProcessInput(bool IsGameOver) override;
 
 	virtual void Draw() override;
 };

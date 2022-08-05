@@ -13,17 +13,17 @@ LoseState::LoseState(StateMachineExampleGame* pOwner)
 {
 }
 
-bool LoseState::Update(bool processInput)
+bool LoseState::Update(bool IsGameOver, bool processInput)
 {
 	if (processInput)
 	{
-		ProcessInput();
+		ProcessInput(IsGameOver);
 	}
 
 	return false;
 }
 
-void LoseState::ProcessInput()
+void LoseState::ProcessInput(bool IsGameOver)
 {
 	int input = _getch();
 	m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);

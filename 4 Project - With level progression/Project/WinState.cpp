@@ -13,17 +13,17 @@ WinState::WinState(StateMachineExampleGame* pOwner)
 {
 }
 
-bool WinState::Update(bool processInput)
+bool WinState::Update(bool IsGameOver, bool processInput)
 {
 	if (processInput)
 	{
-		ProcessInput();
+		ProcessInput(IsGameOver);
 	}
 
 	return false;
 }
 
-void WinState::ProcessInput()
+void WinState::ProcessInput(bool IsGameOver)
 {
 	int input = _getch();
 	m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);

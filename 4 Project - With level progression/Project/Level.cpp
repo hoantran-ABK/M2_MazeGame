@@ -67,6 +67,7 @@ bool Level::Load(std::string levelName, int* playerX, int* playerY)
 		
 		// Convert level
 		bool anyWarnings = ConvertLevel(playerX, playerY);
+		m_pActors.size();
 		if (anyWarnings)
 		{
 			cout << "There were some warnings in the level data, see above." << endl;
@@ -94,14 +95,17 @@ void Level::Draw()
 	COORD actorCursorPosition;
 
 	// Draw actors
-	for (auto actor = m_pActors.begin(); actor != m_pActors.end(); ++actor)
+	if (!m_pActors.empty())
 	{
-		if ((*actor)->IsActive())
+		for (auto actor = m_pActors.begin(); actor != m_pActors.end(); actor++)
 		{
-			actorCursorPosition.X = (*actor)->GetXPosition();
-			actorCursorPosition.Y = (*actor)->GetYPosition();
-			SetConsoleCursorPosition(console, actorCursorPosition);
-			(*actor)->Draw();
+			if ((*actor)->IsActive())
+			{
+				actorCursorPosition.X = (*actor)->GetXPosition();
+				actorCursorPosition.Y = (*actor)->GetYPosition();
+				SetConsoleCursorPosition(console, actorCursorPosition);
+				(*actor)->Draw();
+			}
 		}
 	}
 }

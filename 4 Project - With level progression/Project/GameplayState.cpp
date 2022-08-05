@@ -33,7 +33,7 @@ GameplayState::GameplayState(StateMachineExampleGame* pOwner)
 	, m_currentLevel(0)
 	, m_pLevel(nullptr)
 {
-	//m_LevelNames.push_back("Level1.txt");
+	m_LevelNames.push_back("Level1.txt");
 	//m_LevelNames.push_back("Level2.txt");
 	//m_LevelNames.push_back("Level3.txt");
 	m_LevelNames.push_back("LevelX.txt");
@@ -64,7 +64,7 @@ void GameplayState::Enter()
 	Load();
 }
 
-void GameplayState::ProcessInput()
+void GameplayState::ProcessInput(bool IsGameOver)
 {
 	if (m_player.GetBeatLevel())
 	{
@@ -72,6 +72,10 @@ void GameplayState::ProcessInput()
 		return;
 	}
 	int input = _getch();
+	if (IsGameOver)
+	{
+		return;
+	}
 	int arrowInput = 0;
 	int newPlayerX = m_player.GetXPosition();
 	int newPlayerY = m_player.GetYPosition();
@@ -151,13 +155,13 @@ void GameplayState::CheckBeatLevel()
 	}
 }
 
-bool GameplayState::Update(bool processInput)
+bool GameplayState::Update(bool IsGameOver, bool processInput)
 {
 	if (processInput && !m_player.GetBeatLevel())
 	{
-		ProcessInput();
+		ProcessInput(IsGameOver);
 	}
-
+	HandleCollision(m_player.GetXPosition(), m_player.GetYPosition());
 	CheckBeatLevel();
 
 	return false;
@@ -195,7 +199,7 @@ void GameplayState::Draw()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	system("cls");
-
+	if (m_pLevel == nullptr) { return; }
 	m_pLevel->Draw();
 
 	// Set cursor position for player 

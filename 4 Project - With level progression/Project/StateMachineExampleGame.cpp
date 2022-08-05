@@ -20,28 +20,37 @@ bool StateMachineExampleGame::Init()
 	return true;
 }
 
-bool StateMachineExampleGame::UpdateCurrentState(bool processInput)
+bool StateMachineExampleGame::UpdateCurrentState(bool & IsReadyForInput, bool & IsDoneWithInput, bool processInput)
 {
-	//bool done = false;
-	if (m_pNextState != nullptr)
-	{
-		ChangeState(m_pNextState);
-		m_pNextState = nullptr;
-	}
+	//if (IsDoneWithInput)
+	//{
+		IsReadyForInput = false;
 
-	if (m_pCurrentState != nullptr)
-	{
-		//done = m_pCurrentState->Update(processInput);
-		SetIsDone(m_pCurrentState->Update(processInput));
-	}
-	return GetIsDone();
+		//bool done = false;
+		if (m_pNextState != nullptr)
+		{
+			ChangeState(m_pNextState);
+			m_pNextState = nullptr;
+		}
+
+		if (m_pCurrentState != nullptr)
+		{
+			//done = m_pCurrentState->Update(processInput);
+			SetIsDone(m_pCurrentState->Update(false, processInput));
+		}
+		//IsReadyForInput = true;
+		return GetIsDone();
+	//}
+	//return false;
 }
 
-void StateMachineExampleGame::DrawCurrentState()
+void StateMachineExampleGame::DrawCurrentState(bool & IsReadyForInput, bool & IsDoneWithInput, bool IsGameOver)
 {
-	if (m_pCurrentState != nullptr)
+	if (m_pCurrentState != nullptr )//&& IsDoneWithInput)
 	{
+		IsReadyForInput = false;
 		m_pCurrentState->Draw();
+		IsReadyForInput = true;
 	}
 }
 
@@ -50,7 +59,8 @@ void StateMachineExampleGame::ChangeState(GameState* pNewState)
 	if (m_pCurrentState != nullptr)
 	{
 		m_pCurrentState->Exit();
-	}
+	} 
+	//m_pCurrentState->Draw();
 
 	delete m_pCurrentState;
 	m_pCurrentState = pNewState;
@@ -97,9 +107,16 @@ bool StateMachineExampleGame::Cleanup()
 	return true;
 }
 
-void StateMachineExampleGame::ProcessInputs()
+void StateMachineExampleGame::ProcessStateInputs(bool & IsReadyForInput, bool & IsDoneWithInput, bool IsGameOver)
 {
-	m_pCurrentState->ProcessInput();
+	if (m_pCurrentState == nullptr || !IsReadyForInput)
+	{
+		IsReadyForInput = false;
+		return;
+	}
+	//IsDoneWithInput = false;
+	m_pCurrentState->ProcessInput(IsGameOver);
+	IsDoneWithInput = true;
 }
 
 

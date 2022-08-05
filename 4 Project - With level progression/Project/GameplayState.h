@@ -28,12 +28,12 @@ public:
 	~GameplayState();
 
 	virtual void Enter() override;
-	virtual bool Update(bool processInput = true) override;
+	virtual bool Update(bool IsGameOver, bool processInput = true) override;
 	virtual void Draw() override;
 
 
 protected:
-	void ProcessInput() override;
+	void ProcessInput(bool IsGameOver) override;
 	void CheckBeatLevel();
 
 private:
