@@ -2,6 +2,7 @@
 #include "PlacableActor.h"
 #include "Player.h"
 
+// M4_Ch4 : Shield powerup needs to provide a delayed invicibility period since multithreading makes the shield effectively useless
 class Shield : public PlacableActor
 {
 public:

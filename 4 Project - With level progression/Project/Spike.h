@@ -6,6 +6,7 @@
 #include "PlacableActor.h"
 #include "Player.h"
 
+// M4_Ch4 : Spike Class needs to be refactored to properly operate in a real time environment
 class Spike : public PlacableActor
 {
 public :

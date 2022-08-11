@@ -28,6 +28,8 @@ void Game::RunGameLoop()
 		Update(false);
 
 		// Draw
+		// M4_Ch4 : to reduce "flickering", make something that limits Draw() calls until enemies / other active actors update
+			// ie Don't re-draw anything unless something actually needs to be updated
 		Draw();
 		// Update with input
 		ProcessInputs();
