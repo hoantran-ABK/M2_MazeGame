@@ -17,14 +17,14 @@ HighScoreState::HighScoreState(StateMachineExampleGame* pOwner)
 
 bool HighScoreState::Update(bool processInput)
 {
-	if (processInput)
+	/*if (processInput)
 	{
-		ProcessInput();
-	}
+		ProcessInput('');
+	}*/
 	return false;
 }
 
-void HighScoreState::ProcessInput()
+void HighScoreState::ProcessInput()//int g_input)
 {
 	int input = _getch();
 	m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);

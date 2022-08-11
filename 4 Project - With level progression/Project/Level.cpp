@@ -175,7 +175,7 @@ bool Level::ConvertLevel(int* playerX, int* playerY)
 				}
 				break;
 			case '#':
-				m_pActors.push_back(new Spike(x, y, 3, 2));
+				m_pActors.push_back(new Spike(x, y, 10, 12));
 				m_pLevelData[index] = ' '; // clear the lev0el
 				break;
 			case 'e':

@@ -13,7 +13,7 @@ public:
 
 	virtual bool Update(bool processInput = true) override;
 
-	void ProcessInput() override;
+	void ProcessInput() override;//int g_input) override;
 
 	virtual void Draw() override;
 

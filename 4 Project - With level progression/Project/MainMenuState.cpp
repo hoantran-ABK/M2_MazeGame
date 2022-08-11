@@ -21,14 +21,14 @@ MainMenuState::MainMenuState(StateMachineExampleGame* pOwner)
 
 bool MainMenuState::Update(bool processInput)
 {
-	if (processInput)
+	/*if (processInput)
 	{
 		ProcessInput();
-	}
+	}*/
 	return m_shouldQuit;
 }
 
-void MainMenuState::ProcessInput()
+void MainMenuState::ProcessInput()//int g_input)
 {
 	if (m_shouldQuit)
 	{

@@ -16,7 +16,7 @@ public:
 	virtual void SetIsDone(bool done) { m_isDone = done; }
 	virtual bool GetIsDone() { return m_isDone; }
 
-	virtual void ProcessInputs() { return; }
+	virtual void ProcessInputs() { return; }//int g_input) { return; }
 private:
 	bool m_isDone = false;
 };

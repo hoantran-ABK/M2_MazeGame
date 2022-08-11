@@ -34,6 +34,8 @@ void Spike::Trigger()
 {
 	m_active = m_maxActive;
 	m_delay = m_maxDelay;
+
+	m_startDelayTime = std::chrono::system_clock::now();
 }
 
 void Spike::Update()
@@ -54,12 +56,16 @@ void Spike::Update()
 bool Spike::IsTriggered()
 {
 	return m_delay > 0;
+	//std::chrono::time_point<std::chrono::system_clock> currentDelayTime = std::chrono::system_clock::now();
+	//return std::chrono::duration_cast<std::chrono::milliseconds>(currentDelayTime - m_startDelayTime).count() < m_waitDelayTime;
 }
 
 
 bool Spike::IsActive()
 {
 	return m_active > 0 && m_delay == 0;
+	//std::chrono::time_point<std::chrono::system_clock> currentActiveTime = std::chrono::system_clock::now();
+	//return std::chrono::duration_cast<std::chrono::milliseconds>(currentActiveTime - m_startActiveTime).count() < m_waitActiveTime;
 }
 
 void Spike::OnCollision(PlacableActor* collidingPlayer)

@@ -19,14 +19,14 @@ SettingsState::SettingsState(StateMachineExampleGame* pOwner)
 
 bool SettingsState::Update(bool processInput)
 {
-	if (processInput)
+	/*if (processInput)
 	{
 		ProcessInput();
-	}
+	}*/
 	return false;
 }
 
-void SettingsState::ProcessInput()
+void SettingsState::ProcessInput()//int g_input)
 {
 	int input = _getch();
 	if (input == kEscapeKey || (char)input == kMainMenu)

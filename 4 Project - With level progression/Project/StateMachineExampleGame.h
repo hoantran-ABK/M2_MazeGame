@@ -34,6 +34,6 @@ public:
 	void LoadScene(SceneName scene);
 	virtual bool Cleanup() override;
 
-	virtual void ProcessInputs() override;
+	virtual void ProcessInputs() override;// int g_input) override;
 };
 

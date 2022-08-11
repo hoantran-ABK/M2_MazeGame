@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include <iostream>
 
-Enemy::Enemy(int x, int y, int deltaX, int deltaY)
+Enemy::Enemy(int x, int y, int deltaX, int deltaY, int wait)
 	: PlacableActor(x, y)
 	, m_currentMovementX(0)
 	, m_currentMovementY(0)
@@ -11,6 +11,8 @@ Enemy::Enemy(int x, int y, int deltaX, int deltaY)
 	, m_movementInY(deltaY)
 {
 	InitDirection();
+	m_waitTime = wait;
+	m_startTime = std::chrono::system_clock::now();
 }
 
 void Enemy::InitDirection()
@@ -32,6 +34,13 @@ void Enemy::Draw()
 
 void Enemy::Update()
 {
+	std::chrono::time_point<std::chrono::system_clock> currentTime = std::chrono::system_clock::now();
+
+	if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - m_startTime).count() < m_waitTime)
+	{
+		return;
+	}
+
 	if (m_movementInX != 0)
 	{
 		UpdateDirection(m_currentMovementX, m_directionX, m_movementInX);
@@ -42,6 +51,7 @@ void Enemy::Update()
 	}
 
 	this->SetPosition(m_pPosition->x + m_directionX, m_pPosition->y + m_directionY);
+	m_startTime = std::chrono::system_clock::now();
 }
 
 void Enemy::OnCollision(PlacableActor* collidingPlayer)
@@ -71,6 +81,8 @@ void Enemy::OnCollision(PlacableActor* collidingPlayer)
 
 void Enemy::UpdateDirection(int& current, int& direction, int& movement)
 {
+	
+
 	current += direction;
 	if (std::abs(current) > movement)
 	{
