@@ -42,6 +42,9 @@ GameplayState::GameplayState(StateMachineExampleGame* pOwner)
 
 GameplayState::~GameplayState()
 {
+	InputThread->join();
+	delete InputThread;
+
 	delete m_pLevel;
 	m_pLevel = nullptr;
 }
@@ -62,42 +65,99 @@ bool GameplayState::Load()
 void GameplayState::Enter()
 {
 	Load();
+	// Start Thread Here?
+	InputThread = new std::thread(&GameplayState::GetInput, this);
+	// End thread at destructor? Or where Gameplay State will end(down in CHeckBeatLevel maybe)?
 }
 
-void GameplayState::ProcessInput()
+void GameplayState::GetInput()
+{
+	int l_input;
+	int* old;
+	while (true)
+	{
+		if (m_IsGameDone)
+		{
+			break;
+		}
+		int a_input = _getch();
+		if (a_input != kArrowInput)
+		{
+			m_IsArrowInput = false;
+		}
+		else
+		{
+			m_IsArrowInput = true;
+		}
+		l_input = _getch();
+
+		
+		std::lock_guard<std::mutex> Guard(mu);
+		//mu.lock();
+		old = g_input;
+		/*if (g_input != nullptr)
+		{
+			delete g_input;
+		}*/
+		g_input = new int(l_input);
+		delete old;
+		//mu.unlock();
+	}
+}
+
+void GameplayState::ProcessInput()//int g_input)
 {
 	if (m_player.GetBeatLevel())
 	{
 		CheckBeatLevel();
 		return;
 	}
-	int input = _getch();
+
+	std::lock_guard<std::mutex> Guard(mu);
+	//mu.lock();
+	if (g_input == nullptr)
+	{
+		if (!m_IsGameDone)
+		{
+			HandleCollision(m_player.GetXPosition(), m_player.GetYPosition());
+		}
+		return;
+	}
+
+	// consume whatever is in g_input and get rid of it (as long as it's not nullptr)
+	int input = *g_input;
+	int* old = g_input;
+	//delete g_input;
+	g_input = nullptr;
+	delete old;
+	//mu.unlock();
+
 	int arrowInput = 0;
 	int newPlayerX = m_player.GetXPosition();
 	int newPlayerY = m_player.GetYPosition();
 
 	// One of the arrow keys were pressed
-	if (input == kArrowInput)
+	if (m_IsArrowInput)//input == kArrowInput)
 	{
-		arrowInput = _getch();
+		arrowInput = input;
 	}
 
-	if ((input == kArrowInput && arrowInput == kLeftArrow) ||
+	if ((m_IsArrowInput && arrowInput == kLeftArrow) || //input == kArrowInput && arrowInput == kLeftArrow) ||
 		(char)input == 'A' || (char)input == 'a')
 	{
 		newPlayerX--;
 	}
-	else if ((input == kArrowInput && arrowInput == kRightArrow) ||
+	else if ((m_IsArrowInput && arrowInput == kRightArrow) ||//input == kArrowInput && arrowInput == kRightArrow) ||
 		(char)input == 'D' || (char)input == 'd')
 	{
 		newPlayerX++;
 	}
-	else if ((input == kArrowInput && arrowInput == kUpArrow) ||
+	else if ((m_IsArrowInput && arrowInput == kUpArrow) ||//input == kArrowInput && arrowInput == kUpArrow) ||
 		(char)input == 'W' || (char)input == 'w')
 	{
 		newPlayerY--;
 	}
-	else if ((input == kArrowInput && arrowInput == kDownArrow) ||
+	else if ((m_IsArrowInput && arrowInput == kDownArrow) || //input == kArrowInput && arrowInput == kDownArrow) ||
 		(char)input == 'S' || (char)input == 's')
 	{
 		newPlayerY++;
@@ -136,6 +196,7 @@ void GameplayState::CheckBeatLevel()
 			++m_currentLevel;
 			if (m_currentLevel == m_LevelNames.size())
 			{
+				m_IsGameDone = true;
 				Utility::WriteHighScore(m_player.GetMoney());
 
 				AudioManager::GetInstance()->PlayWinSound();
@@ -153,10 +214,10 @@ void GameplayState::CheckBeatLevel()
 
 bool GameplayState::Update(bool processInput)
 {
-	if (processInput && !m_player.GetBeatLevel())
+	/*if (processInput && !m_player.GetBeatLevel())
 	{
 		ProcessInput();
-	}
+	}*/
 
 	CheckBeatLevel();
 
@@ -184,6 +245,7 @@ void GameplayState::HandleCollision(int newPlayerX, int newPlayerY)
 	// IF for whatever reason, health drops to 0, signal game over
 	if (m_player.GetLives() < 0)
 	{
+		m_IsGameDone = true;
 		//TODO: Go to game over screen
 		AudioManager::GetInstance()->PlayLoseSound();
 		m_pOwner->LoadScene(StateMachineExampleGame::SceneName::Lose);

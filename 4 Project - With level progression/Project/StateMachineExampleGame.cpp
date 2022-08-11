@@ -97,9 +97,9 @@ bool StateMachineExampleGame::Cleanup()
 	return true;
 }
 
-void StateMachineExampleGame::ProcessInputs()
+void StateMachineExampleGame::ProcessInputs()//int g_input)
 {
-	m_pCurrentState->ProcessInput();
+	m_pCurrentState->ProcessInput();//g_input);
 }
 
 

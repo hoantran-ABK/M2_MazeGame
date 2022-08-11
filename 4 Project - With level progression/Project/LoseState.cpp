@@ -15,15 +15,15 @@ LoseState::LoseState(StateMachineExampleGame* pOwner)
 
 bool LoseState::Update(bool processInput)
 {
-	if (processInput)
+	/*if (processInput)
 	{
 		ProcessInput();
-	}
+	}*/
 
 	return false;
 }
 
-void LoseState::ProcessInput()
+void LoseState::ProcessInput()//int g_input)
 {
 	int input = _getch();
 	m_pOwner->LoadScene(StateMachineExampleGame::SceneName::MainMenu);

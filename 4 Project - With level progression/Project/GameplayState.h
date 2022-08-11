@@ -6,11 +6,20 @@
 #include <windows.h>
 #include <vector>
 #include <string>
+#include <mutex>
+#include <thread>
 
 class StateMachineExampleGame;
 
+
 class GameplayState : public GameState
 {
+	std::mutex mu;
+	int * g_input = nullptr;
+	bool m_IsGameDone = false;
+	std::thread* InputThread = nullptr;
+	bool m_IsArrowInput = false;
+
 	StateMachineExampleGame* m_pOwner;
 	
 	Player m_player;
@@ -33,7 +42,9 @@ public:
 
 
 protected:
-	void ProcessInput() override;
+	void GetInput();
+
+	void ProcessInput() override;// int g_input) override;
 	void CheckBeatLevel();
 
 private:
