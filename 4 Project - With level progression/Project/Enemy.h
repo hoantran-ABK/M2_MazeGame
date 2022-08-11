@@ -1,10 +1,12 @@
 #pragma once
+#include <chrono>
+
 #include "PlacableActor.h"
 #include "Player.h"
 class Enemy : public PlacableActor
 {
 public:
-	Enemy(int x, int y, int deltaX = 0, int deltaY = 0);
+	Enemy(int x, int y, int deltaX = 0, int deltaY = 0, int wait = 500);
 
 	virtual ActorType GetType() override { return ActorType::Enemy; }
 	virtual void Draw() override;
@@ -24,6 +26,9 @@ private:
 
 	int m_directionX;
 	int m_directionY;
+
+	std::chrono::time_point<std::chrono::system_clock> m_startTime;
+	int m_waitTime;
 
 	void UpdateDirection(int& current, int& direction, int& movement);
 
