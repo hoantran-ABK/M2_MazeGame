@@ -36,6 +36,7 @@ void Enemy::Update()
 {
 	std::chrono::time_point<std::chrono::system_clock> currentTime = std::chrono::system_clock::now();
 
+	// Added checks to only update when based on real time instead of "cycles" or iterations
 	if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - m_startTime).count() < m_waitTime)
 	{
 		return;
@@ -81,8 +82,6 @@ void Enemy::OnCollision(PlacableActor* collidingPlayer)
 
 void Enemy::UpdateDirection(int& current, int& direction, int& movement)
 {
-	
-
 	current += direction;
 	if (std::abs(current) > movement)
 	{

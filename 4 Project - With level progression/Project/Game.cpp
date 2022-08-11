@@ -55,19 +55,10 @@ bool Game::Update(bool processInput)
 	return m_pStateMachine->UpdateCurrentState(processInput);
 }
 
-//void Game::GetInput()
-//{
-//	while (!CheckGameDone())
-//	{
-//		int _input = _getch();
-//		std::lock_guard<std::mutex> Guard(g_mutex);
-//		g_input = _input;
-//	}
-//}
 
 void Game::ProcessInputs()
 {
-	m_pStateMachine->ProcessInputs();// g_input);
+	m_pStateMachine->ProcessInputs();
 }
 
 void Game::Draw()

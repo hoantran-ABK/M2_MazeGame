@@ -65,9 +65,16 @@ bool GameplayState::Load()
 void GameplayState::Enter()
 {
 	Load();
-	// Start Thread Here?
+
+	// Start Thread Here: Moved from my previous version which was back up at the Game class. 
+	// The issue with having the threads up in the Game class is that the threading for input had to be abstracted
+	// for every GameState which meant that when switching from say GameplayState to WinState, 
+	// the Input thread that was running on GameplayState's instance would be deleted while the InputThread was 
+	// waiting resulting in some Race Conditions since it would then read an input and try to 
+	// access stuff from GameplayState that didn't exist anymore.
+
 	InputThread = new std::thread(&GameplayState::GetInput, this);
-	// End thread at destructor? Or where Gameplay State will end(down in CHeckBeatLevel maybe)?
+	// End thread at destructor? Or where Gameplay State will end(down in CHeckBeatLevel maybe)
 }
 
 void GameplayState::GetInput()
